@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'prime'
 
+# Documantation
 class XmlController < ApplicationController
   def max(array)
     arr = array.clone
@@ -32,7 +35,6 @@ class XmlController < ApplicationController
   def compute
     @input = params[:number].split(' ').map(&:to_i)
     check
-
     respond_to do |format|
       format.xml { render xml: @result.to_xml }
       format.rss { render xml: @result.to_xml }
@@ -40,8 +42,8 @@ class XmlController < ApplicationController
   end
 
   def check
-    if (@result = cons(edit(@input))).nil?
-      @result = { message: "Для n=#{@input} нет близнецов" }
+    if (@result = cons(edit(@input))).empty?
+      @result = { message: "для #{@input.join(' ')} нет максимальной подпоследовательности" }
     else
       @result = @result.map { |x1| { value: x1.join(' ') } }
       @result.unshift({ value: @input.join(' ') })
